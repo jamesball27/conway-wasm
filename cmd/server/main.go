@@ -11,10 +11,9 @@ const (
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello world")
-	})
+	http.Handle("/", http.FileServer(http.Dir("./dist")))
 
 	log.Printf("Server listening on port %d", port)
+
 	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 }
