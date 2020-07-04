@@ -26,5 +26,8 @@ func main() {
 		Game:   g,
 	}
 
-	r.Render()
+	for {
+		r.Render()
+		g.PopulateNextGen()
+	}
 }

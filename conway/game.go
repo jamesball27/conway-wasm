@@ -1,14 +1,15 @@
 package conway
 
 type Game struct {
-	CurrentGen Grid
-	NextGen    Grid
+	Grid *Grid
 }
 
-func NewGame(h int, w int) Game {
-	g := NewGrid(h, w)
-	return Game{
-		CurrentGen: g.randomize(),
-		NextGen:    nil,
-	}
+func NewGame(h int, w int) *Game {
+	g := NewGrid(h, w).randomize()
+
+	return &Game{Grid: g}
+}
+
+func (g *Game) PopulateNextGen() {
+	g.Grid = g.Grid.populate()
 }

@@ -6,16 +6,17 @@ import (
 )
 
 type Renderer struct {
-	Game   conway.Game
+	Game   *conway.Game
 	Canvas canvas.Canvas
 }
 
 func (r *Renderer) Render() {
-	g := r.Game.CurrentGen
+	g := r.Game.Grid
 
-	for x := 0; x < len(g); x++ {
-		for y := 0; y < len(g[x]); y++ {
-			if g[x][y].IsAlive {
+	for x := 0; x < g.Height(); x++ {
+		for y := 0; y < g.Width(); y++ {
+			if (*g)[x][y].IsAlive {
+				// Height and width of grid are reversed with regards to to x/y coordinates
 				r.Canvas.FillCell(y, x)
 			}
 		}
