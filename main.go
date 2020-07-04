@@ -1,16 +1,30 @@
 package main
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/jamesball27/conway-wasm/canvas"
+	"github.com/jamesball27/conway-wasm/conway"
+	"github.com/jamesball27/conway-wasm/render"
 )
 
 const (
-	canvasID     = "canvas"
-	canvasHeight = 400
-	canvasWidth  = 1000
+	canvasID = "canvas"
+	height   = 100
+	width    = 200
 )
 
 func main() {
-	c := canvas.New(canvasID, canvasHeight, canvasWidth)
-	c.Render()
+	rand.Seed(time.Now().UnixNano())
+
+	c := canvas.New(canvasID, height, width)
+	g := conway.NewGame(height, width)
+
+	r := render.Renderer{
+		Canvas: c,
+		Game:   g,
+	}
+
+	r.Render()
 }

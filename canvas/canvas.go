@@ -1,7 +1,6 @@
 package canvas
 
 import (
-	"fmt"
 	"syscall/js"
 )
 
@@ -9,34 +8,39 @@ type Canvas struct {
 	height int
 	width  int
 	ctx    js.Value
-	canvas js.Value
 }
 
-const boxSize = 50
+const boxSize = 10
 
 func New(id string, h int, w int) Canvas {
 	canvas := js.Global().Get("document").Call("getElementById", id)
 	ctx := canvas.Call("getContext", "2d")
 
-	canvas.Set("height", c.height)
-	canvas.Set("width", c.width)
-	ctx.Call("clearRect", 0, 0, c.width, c.height)
+	height := h * boxSize
+	width := w * boxSize
 
-	return Canvas{
-		height: h,
-		width:  w,
+	canvas.Set("height", height)
+	canvas.Set("width", width)
+	ctx.Call("clearRect", 0, 0, height, width)
+	ctx.Set("fillStyle", "black")
+
+	c := Canvas{
+		height: height,
+		width:  width,
 		ctx:    ctx,
-		canvas: canvas,
 	}
+
+	c.drawGrid()
+
+	return c
 }
 
-func (c *Canvas) Render() {
-	c.drawGrid()
+func (c *Canvas) FillCell(x int, y int) {
+	c.ctx.Call("fillRect", x*boxSize, y*boxSize, boxSize, boxSize)
 }
 
 func (c *Canvas) drawGrid() {
 	for x := 0; x <= c.width; x += boxSize {
-		fmt.Println(x)
 		c.ctx.Call("moveTo", x, 0)
 		c.ctx.Call("lineTo", x, c.height)
 	}
