@@ -1,7 +1,16 @@
 package main
 
-import "fmt"
+import (
+	"github.com/jamesball27/conway-wasm/canvas"
+)
+
+const (
+	canvasID     = "canvas"
+	canvasHeight = 400
+	canvasWidth  = 1000
+)
 
 func main() {
-	fmt.Println("Hello, WebAssembly!")
+	c := canvas.New(canvasID, canvasHeight, canvasWidth)
+	c.Render()
 }
