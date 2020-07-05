@@ -16,25 +16,40 @@ func NewGrid(h int, w int) *Grid {
 }
 
 func (g *Grid) randomize() *Grid {
-	for x := 0; x < g.Height(); x++ {
-		for y := 0; y < g.Width(); y++ {
-			c := Cell{
-				x:       x,
-				y:       y,
-				IsAlive: !(rand.Intn(2) == 0),
-			}
-			(*g)[x][y] = c
+	g.Each(func(row int, col int) {
+		c := Cell{
+			IsAlive: !(rand.Intn(2) == 0),
+			row:     row,
+			col:     col,
 		}
-	}
+		g.Set(row, col, c)
+	})
+
 	return g
 }
 
-func (g Grid) Height() int {
-	return len(g)
+func (g *Grid) Height() int {
+	return len(*g)
 }
 
-func (g Grid) Width() int {
-	return len(g[0])
+func (g *Grid) Width() int {
+	return len((*g)[0])
+}
+
+func (g *Grid) Set(row int, col int, c Cell) {
+	(*g)[row][col] = c
+}
+
+func (g *Grid) Get(row int, col int) Cell {
+	return (*g)[row][col]
+}
+
+func (g *Grid) Each(f func(row int, col int)) {
+	for row := 0; row < g.Height(); row++ {
+		for col := 0; col < g.Width(); col++ {
+			f(row, col)
+		}
+	}
 }
 
 // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -44,27 +59,25 @@ func (g Grid) Width() int {
 func (g *Grid) populate() *Grid {
 	next := NewGrid(g.Height(), g.Width())
 
-	for x := 0; x < g.Height(); x++ {
-		for y := 0; y < g.Width(); y++ {
-			cell := (*g)[x][y]
-			new := Cell{x: x, y: y}
-			alive := cell.aliveNeighbors(*g)
+	g.Each(func(row int, col int) {
+		cell := g.Get(row, col)
+		new := Cell{row: row, col: col}
+		alive := cell.aliveNeighbors(g)
 
-			if cell.IsAlive {
-				if alive < 2 || alive > 3 {
-					new.IsAlive = false
-				} else {
-					new.IsAlive = true
-				}
+		if cell.IsAlive {
+			if alive < 2 || alive > 3 {
+				new.IsAlive = false
 			} else {
-				if alive == 3 {
-					new.IsAlive = true
-				}
+				new.IsAlive = true
 			}
-
-			(*next)[x][y] = new
+		} else {
+			if alive == 3 {
+				new.IsAlive = true
+			}
 		}
-	}
+
+		next.Set(row, col, new)
+	})
 
 	return next
 }

@@ -35,6 +35,7 @@ func main() {
 	})
 	window := js.Global()
 	window.Call("setInterval", renderer, 100)
+	// window.Call("setTimeout", renderer, 100)
 
 	// Ensure Go program doesn't exit
 	runner := make(chan bool)
