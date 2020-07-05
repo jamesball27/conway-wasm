@@ -2,6 +2,7 @@ package main
 
 import (
 	"math/rand"
+	"syscall/js"
 	"time"
 
 	"github.com/jamesball27/conway-wasm/canvas"
@@ -11,8 +12,8 @@ import (
 
 const (
 	canvasID = "canvas"
-	height   = 100
-	width    = 200
+	height   = 50
+	width    = 100
 )
 
 func main() {
@@ -26,8 +27,16 @@ func main() {
 		Game:   g,
 	}
 
-	for {
+	renderer := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		r.Render()
 		g.PopulateNextGen()
-	}
+
+		return nil
+	})
+	window := js.Global()
+	window.Call("setInterval", renderer, 100)
+
+	// Ensure Go program doesn't exit
+	runner := make(chan bool)
+	<-runner
 }

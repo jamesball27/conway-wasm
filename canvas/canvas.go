@@ -24,22 +24,18 @@ func New(id string, h int, w int) Canvas {
 	ctx.Call("clearRect", 0, 0, height, width)
 	ctx.Set("fillStyle", "black")
 
-	c := Canvas{
+	return Canvas{
 		height: height,
 		width:  width,
 		ctx:    ctx,
 	}
-
-	c.drawGrid()
-
-	return c
 }
 
 func (c *Canvas) FillCell(x int, y int) {
 	c.ctx.Call("fillRect", x*boxSize, y*boxSize, boxSize, boxSize)
 }
 
-func (c *Canvas) drawGrid() {
+func (c *Canvas) DrawGrid() {
 	for x := 0; x <= c.width; x += boxSize {
 		c.ctx.Call("moveTo", x, 0)
 		c.ctx.Call("lineTo", x, c.height)
@@ -52,4 +48,8 @@ func (c *Canvas) drawGrid() {
 
 	c.ctx.Set("strokeStyle", "black")
 	c.ctx.Call("stroke")
+}
+
+func (c *Canvas) Clear() {
+	c.ctx.Call("clearRect", 0, 0, c.width, c.height)
 }

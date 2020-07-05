@@ -11,8 +11,10 @@ type Renderer struct {
 }
 
 func (r *Renderer) Render() {
-	g := r.Game.Grid
+	r.Canvas.Clear()
+	r.Canvas.DrawGrid()
 
+	g := r.Game.Grid
 	for x := 0; x < g.Height(); x++ {
 		for y := 0; y < g.Width(); y++ {
 			if (*g)[x][y].IsAlive {
