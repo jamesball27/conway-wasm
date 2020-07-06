@@ -1,13 +1,65 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <!-- https://picnicss.com/ -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic" />
+
+    <style>
+      body { padding: 0 10%; }
+      canvas { width: 100%; }
+      p { margin: 0; }
+    </style>
   </head>
-  <body>
-    <h1>Conway's Game of Life</h1>
-    <button id="start">Start</button>
-    <button id="stop">Stop</button>
-    <button id="reset">Reset</button>
-    <canvas id="canvas"></canvas>
+  
+  <body class="flex">
+    <main>
+      <header>
+        <h1>Conway's Game of Life</h1>
+      </header>
+
+      <canvas id="canvas"></canvas>
+
+      <footer>
+        <button id="start" class="success">Start</button>
+        <button id="stop" class="error">Stop</button>
+        <button id="reset">Reset</button>
+      </footer>
+    </main>
+
+    <aside>
+      <a
+        href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+        target="_blank"
+      >
+        Rules:
+      </a>
+      <ol>
+        <li>
+          Any live cell with fewer than two live neighbors dies, as if by
+          underpopulation.
+        </li>
+        <li>
+          Any live cell with two or three live neighbors lives on to the next
+          generation.
+        </li>
+        <li>
+          Any live cell with more than three live neighbors dies, as if by
+          overpopulation.
+        </li>
+        <li>
+          Any dead cell with exactly three live neighbors becomes a live cell,
+          as if by reproduction.
+        </li>
+      </ol>
+    </aside>
+
+    <footer class="flex two">
+      <p>Built with Go compiled to WebAssembly
+        <a href="https://github.com/jamesball27/conway-wasm" target="_blank">
+          Github repo
+        </a>
+      </p>
+    </footer>
 
     <script src="./wasm_exec.js"></script>
     <script>
