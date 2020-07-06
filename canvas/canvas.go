@@ -12,7 +12,7 @@ type Canvas struct {
 
 const boxSize = 10
 
-func New(id string, h int, w int) Canvas {
+func New(id string, h int, w int) *Canvas {
 	canvas := js.Global().Get("document").Call("getElementById", id)
 	ctx := canvas.Call("getContext", "2d")
 
@@ -24,7 +24,7 @@ func New(id string, h int, w int) Canvas {
 	ctx.Call("clearRect", 0, 0, height, width)
 	ctx.Set("fillStyle", "black")
 
-	return Canvas{
+	return &Canvas{
 		height: height,
 		width:  width,
 		ctx:    ctx,

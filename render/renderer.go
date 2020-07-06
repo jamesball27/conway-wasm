@@ -7,7 +7,7 @@ import (
 
 type Renderer struct {
 	Game   *conway.Game
-	Canvas canvas.Canvas
+	Canvas *canvas.Canvas
 }
 
 func (r *Renderer) Render() {
