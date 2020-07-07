@@ -11,7 +11,7 @@ const (
 )
 
 func main() {
-	http.Handle("/", http.FileServer(http.Dir("./dist")))
+	http.Handle("/", http.FileServer(http.Dir("./docs")))
 
 	log.Printf("Server listening on port %d", port)
 
